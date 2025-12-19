@@ -170,6 +170,7 @@ class DQNAgent:
         min_buffer_size: int = 10_000,
         target_update_freq: int = 1_000,
         device: str | None = None,
+        eps_decay_frames: int = 250_000,  # Allow configuring epsilon decay
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim
@@ -187,6 +188,8 @@ class DQNAgent:
         self.target_net.eval()
 
         self.optimizer = optim.Adam(self.q_net.parameters(), lr=lr)
+        # Learning rate scheduler to reduce LR over time for stability
+        self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50000, gamma=0.9)
 
         self.loss_fn = nn.SmoothL1Loss(
             reduction="none" if self.algo_type == "per" else "mean"
@@ -200,8 +203,8 @@ class DQNAgent:
             self.buffer = ReplayBuffer(capacity=buffer_capacity)
 
         self.eps_start = 1.0
-        self.eps_end = 0.05
-        self.eps_decay = 250_000
+        self.eps_end = 0.05  # Minimum epsilon to maintain some exploration
+        self.eps_decay = eps_decay_frames
         self.frame_idx = 0
 
         self.training_steps = 0
@@ -313,6 +316,7 @@ class DQNAgent:
         loss.backward()
         nn.utils.clip_grad_norm_(self.q_net.parameters(), max_norm=10.0)
         self.optimizer.step()
+        self.scheduler.step()  # Update learning rate
 
         if self.algo_type == "per":
             new_priorities = loss_tensor.detach().cpu().numpy() + 1e-6
@@ -340,6 +344,10 @@ def train_agent(
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.n
 
+    # Adjust epsilon decay based on number of episodes for longer runs
+    # Longer runs need slower epsilon decay to maintain exploration
+    eps_decay_frames = max(250_000, num_episodes * 400)  # Scale with episode count
+
     agent = DQNAgent(
         state_dim=state_dim,
         action_dim=action_dim,
@@ -350,11 +358,17 @@ def train_agent(
         buffer_capacity=100_000,
         min_buffer_size=10_000,
         target_update_freq=1_000,
+        eps_decay_frames=eps_decay_frames,
     )
 
     episode_rewards: list[float] = []
+    best_avg_reward = -float('inf')
+    patience_counter = 0
+    patience_limit = 500  # Stop if performance degrades for 500 episodes
 
     print(f"\n=== Training {algo_type.upper()} on {env_name} for {num_episodes} episodes ===")
+    print(f"Epsilon decay frames: {eps_decay_frames:,}")
+
     for episode in range(1, num_episodes + 1):
         state, _ = env.reset()
         done = False
@@ -375,12 +389,29 @@ def train_agent(
 
         episode_rewards.append(total_reward)
 
+        # Early stopping check to prevent catastrophic forgetting
+        if episode >= 100:
+            avg_reward_100 = np.mean(episode_rewards[-100:])
+            if avg_reward_100 > best_avg_reward:
+                best_avg_reward = avg_reward_100
+                patience_counter = 0
+            else:
+                patience_counter += 1
+
+            # If performance degrades significantly for too long, stop
+            if patience_counter >= patience_limit and num_episodes > 2000:
+                print(f"\nEarly stopping at episode {episode}: Performance plateaued")
+                print(f"Best 100-ep avg: {best_avg_reward:.2f}, Current: {avg_reward_100:.2f}")
+                break
+
         if episode % 20 == 0:
             last_mean = np.mean(episode_rewards[-20:])
+            current_lr = agent.optimizer.param_groups[0]['lr']
             print(
                 f"Episode {episode:4d} | "
                 f"avg reward (last 20): {last_mean:7.2f} | "
-                f"epsilon: {agent.epsilon():.3f}"
+                f"epsilon: {agent.epsilon():.3f} | "
+                f"lr: {current_lr:.6f}"
             )
 
     env.close()
@@ -438,7 +469,7 @@ def generate_gif(
             frames.append(frame)
 
             action = agent.greedy_action(state)
-            next_state, _, terminated, truncated, _ = env.step(action)
+            next_state, reward, terminated, truncated, _ = env.step(action)
             done = terminated or truncated
             state = next_state
             step += 1
@@ -453,7 +484,7 @@ if __name__ == "__main__":
     ENV_NAME = "LunarLander-v3"
 
     NUM_EPISODES = 10000
-    TEST_NAME = "Test 10000eps"
+    TEST_NAME = "Test 10000eps (Post changes)"
     # to run: source venv/bin/activate && python LunarLander-V2.py
 
     # Create output directory for this test run
