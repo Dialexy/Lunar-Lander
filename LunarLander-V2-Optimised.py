@@ -6,7 +6,7 @@ This is a direct clone of LunarLander-V2.py with stagnation detection for early 
 This is done by checking if the average reward over the last 100 episodes has not improved for 500 episodes.
 Put more simply, it checks if the episodic return has plateaued over the last 500 episodes.
 
-For more information, refer to the original file: LunarLander-V2.py
+For more information about the rest of the algorithm, refer to the original file: LunarLander-V2.py
 """
 
 import os
@@ -146,7 +146,7 @@ class DQNAgent:
         min_buffer_size: int = 10_000,
         target_update_freq: int = 1_000,
         device: str | None = None,
-        eps_decay_frames: int = 250_000,  # Allow configuring epsilon decay
+        eps_decay_frames: int = 250_000, 
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim

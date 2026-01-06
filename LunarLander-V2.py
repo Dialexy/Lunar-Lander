@@ -19,6 +19,8 @@ This Python script trains three deep RL agents on the Gymnasium LunarLander-v3 t
   - dqn_agent.gif       - Displays DQN post training
   - ddqn_agent.gif      - Displays DDQN post training
   - per_agent.gif       - Displays PER post training
+
+  For more specific information, refer to the README.md file.
 """
 
 import os
@@ -158,7 +160,7 @@ class DQNAgent:
         min_buffer_size: int = 10_000,
         target_update_freq: int = 1_000,
         device: str | None = None,
-        eps_decay_frames: int = 250_000,  # Allow configuring epsilon decay
+        eps_decay_frames: int = 250_000, 
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim

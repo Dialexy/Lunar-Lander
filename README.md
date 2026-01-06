@@ -6,7 +6,7 @@ A showcase of deep reinforcement learning algorithms on the Gymnasium LunarLande
 
 This project implements and compares three Q-learning algorithms:
 
-**Specific information found in LunarLander-V2.py**
+**Algorithm overview found in the LunarLander-V2.py header comment**
 
 ## Features
 
@@ -36,8 +36,8 @@ cd Lunar-Lander
 ```bash
 python -m venv venv
 source venv/bin/activate
-# On macOS/Linux, see offical documentation for windows specific information
-# Offical Doc: https://gymnasium.farama.org/environments/box2d/lunar_lander/
+# This if for Unix Systems, see offical documentation for windows specific information
+# Offical Doc: https://gymnasium.farama.org/environments/box2d/
 ```
 
 3. Install dependencies:
