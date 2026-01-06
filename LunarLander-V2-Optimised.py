@@ -2,23 +2,11 @@
 LunarLander-v3 – DQN / DDQN / PER
 Author: Filipe Ramos (CIS2719 Coursework 2)
 
-This Python script trains three deep RL agents on the Gymnasium LunarLander-v3 task using:
-  - DQN  (Deep Q-Network)
-  - DDQN (Double DQN)
-  - PER  (Prioritised Experience Replay + Double DQN targets)
+This is a direct clone of LunarLander-V2.py with stagnation detection for early training stoppage.
+This is done by checking if the average reward over the last 100 episodes has not improved for 500 episodes.
+Put more simply, it checks if the episodic return has plateaued over the last 500 episodes.
 
-  Each agent under goes the same number of training episodes for fair comparison:
-  - 500
-  - 1000
-  - 2500
-  - 5000
-  - 10000
-
- Graph information for the clarity of the marker:
-  - learning_curves.png - shows episodic return against number of episodes
-  - dqn_agent.gif       - Displays DQN post training
-  - ddqn_agent.gif      - Displays DDQN post training
-  - per_agent.gif       - Displays PER post training
+For more information, refer to the original file: LunarLander-V2.py
 """
 
 import os
