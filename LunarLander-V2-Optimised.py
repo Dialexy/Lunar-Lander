@@ -336,6 +336,9 @@ def train_agent(
     )
 
     episode_rewards: list[float] = []
+    best_avg_reward = -float('inf')
+    patience_counter = 0
+    patience_limit = 500
 
     print(f"\n=== Training {algo_type.upper()} on {env_name} for {num_episodes} episodes ===")
     print(f"Epsilon decay frames: {eps_decay_frames:,}")
@@ -359,6 +362,19 @@ def train_agent(
                 agent.update()
 
         episode_rewards.append(total_reward)
+
+        if episode >= 100:
+            avg_reward_100 = np.mean(episode_rewards[-100:])
+            if avg_reward_100 > best_avg_reward:
+                best_avg_reward = avg_reward_100
+                patience_counter = 0
+            else:
+                patience_counter += 1
+
+            if patience_counter >= patience_limit and num_episodes > 2000:
+                print(f"\nEarly stopping at episode {episode}: Performance plateaued")
+                print(f"Best 100-ep avg: {best_avg_reward:.2f}, Current: {avg_reward_100:.2f}")
+                break
 
         if episode % 20 == 0:
             last_mean = np.mean(episode_rewards[-20:])
@@ -435,7 +451,7 @@ if __name__ == "__main__":
 
    """Ease of use, change num of episodes, test name and dir here """
     NUM_EPISODES = 10000
-    TEST_NAME = "Test 10000eps"
+    TEST_NAME = "Test 10000eps (Post changes)"
 
     output_dir = f"results/{TEST_NAME}"
     os.makedirs(output_dir, exist_ok=True)
