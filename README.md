@@ -1,4 +1,4 @@
-# LunarLander-v3 Deep Reinforcement Learning
+# LunarLander-v2 Deep Reinforcement Learning
 
 A showcase of deep reinforcement learning algorithms on the Gymnasium LunarLander-v3 environment.
 
