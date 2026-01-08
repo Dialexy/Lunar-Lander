@@ -54,13 +54,13 @@ source venv/bin/activate
 
 Run the training script for full episode tests:
 ```bash
-python LunarLander-V2.py
+python 'Local Scripts'/LunarLander-V2.py
 # Run via terminal (Extensions such as "code runner" will not work)
 ```
 
 Run the training script for early-stoppage tests:
 ```bash
-python LunarLander-V2-Optimised.py
+python 'Local Scripts'/LunarLander-V2-Optimised.py
 ```
 
 Configure training parameters in the main block:
@@ -72,24 +72,26 @@ TEST_NAME = "Test 10000eps (Post changes)"  # Name your test run
 ## Project Structure
 
 ```
-.
-├── LunarLander-V2.py                     # Optimised training script
-├── LunarLander-V2-Optimised.py           # Main training script
-├── README.md
-├── Gifs/
-│   ├── Full-Test-Runs/         # Pre-optimisation test results (Runs episodes to completion)
-│   │   ├── Test 500eps/
-│   │   ├── Test 1000eps/
-│   │   ├── Test 2500eps/
-│   │   ├── Test 5000eps/
-│   │   └── Test 10000eps/
-│   └── Optimised-Test-Runs/    # Post-optimisation test results (Runs until episodic return stagnates)
-│       ├── Test 500eps/
-│       ├── Test 1000eps/
-│       ├── Test 2500eps/
-│       ├── Test 5000eps/
-│       └── Test 10000eps/
-└── results/                     # Generated during training
+├── Collab Scripts
+│   ├── LunarLander_Colab.ipynb
+│   └── LunarLander_Optimised_Colab.ipynb
+├── Gifs & Graphs
+│   ├── Full-Test-Runs
+│   │   ├── Test 10000eps
+│   │   ├── Test 1000eps
+│   │   ├── Test 2500eps
+│   │   ├── Test 5000eps
+│   │   └── Test 500eps
+│   └── Optimised-Test-Runs
+│       ├── Test 10000eps
+│       ├── Test 1000eps
+│       ├── Test 2500eps
+│       ├── Test 5000eps
+│       └── Test 500eps
+├── Local Scripts
+│   ├── LunarLander-V2-Optimised.py
+│   └── LunarLander-V2.py
+└── README.md
 ```
 
 ## Architecture
