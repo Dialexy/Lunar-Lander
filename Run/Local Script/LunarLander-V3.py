@@ -10,7 +10,6 @@ This Python script trains three deep RL agents on the Gymnasium LunarLander-v3 t
   Each agent under goes the same number of training episodes for fair comparison:
   - 500
   - 1000
-  - 2500
   - 5000
   - 10000
 

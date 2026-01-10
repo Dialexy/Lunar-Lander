@@ -10,7 +10,7 @@ This project implements and compares three Q-learning algorithms:
 
 ## Features
 
-- Automated training with configurable episodes (line: 552)
+- Automated training with configurable episodes
 - Learning curve visualisation via outputted graph
 - GIF generation for post training visualisation of each agent.
 
@@ -54,13 +54,13 @@ source venv/bin/activate
 
 Run the training script:
 ```bash
-python 'Local Scripts'/LunarLander-V3.py
+python 'Run/Local Script'/LunarLander-V3.py
 # Run via terminal (Extensions such as "code runner" will not work)
 ```
 
 Configure training parameters in the main block:
 ```python
-NUM_EPISODES = 10000  # Adjust episode count (line: 525)
+NUM_EPISODES = 10000  # Adjust episode count (line: 527)
 TEST_NAME = "Test 10000eps"  # Name your test run
 ```
 
@@ -158,7 +158,7 @@ After training, evaluation metrics include:
 - Average inference time per episode
 - Final performance summary with statistics
 
-Test results are organized by episode count (500, 1000, 2500, 5000, 10000) in separate directories for comparative analysis.
+Test results are organized by episode count (500, 1000, 5000, 10000) in separate directories for comparative analysis.
 
 ## Author
 
