@@ -1,4 +1,4 @@
-# LunarLander-v2 Deep Reinforcement Learning
+# LunarLander-V3 Deep Reinforcement Learning
 
 A showcase of deep reinforcement learning algorithms on the Gymnasium LunarLander-v3 environment.
 
@@ -67,18 +67,20 @@ TEST_NAME = "Test 10000eps"  # Name your test run
 ## Project Structure
 
 ```
-├── Collab Scripts
-│   └── LunarLander_Colab.ipynb
 ├── Gifs & Graphs
-│   └── Full-Test-Runs
-│   │   ├── Test 10000eps
-│   │   ├── Test 1000eps
-│   │   ├── Test 2500eps
-│   │   ├── Test 5000eps
-│   │   └── Test 500eps
-├── Local Scripts
-│   └── LunarLander-V2.py
-└── README.md
+│   ├── Graphs pre-hyper Parameter changes
+│   ├── Test 10000eps
+│   ├── Test 1000eps
+│   ├── Test 5000eps
+│   └── Test 500eps
+├── README.md
+├── Run
+│   ├── Collab Script
+│   └── Local Script
+└── Terminal Screenshots
+    ├── DDQN
+    ├── DQN
+    └── PER
 ```
 
 ## Architecture
